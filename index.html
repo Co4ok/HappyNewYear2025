@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>З Новим 2025 Роком!</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            font-family: Arial, sans-serif;
+            color: white;
+            text-align: center;
+        }
+        h1 {
+            font-size: 3rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        p {
+            font-size: 1.5rem;
+            margin: 20px 0;
+        }
+        .fireworks {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>🎉 З Новим 2025 Роком! 🎉</h1>
+        <p>Бажаю тобі радості, успіхів і незабутніх моментів у новому році!</p>
+        <p>Нехай 2025 рік стане найкращим у твоєму житті!</p>
+    </div>
+    <canvas class="fireworks"></canvas>
+    <script>
+        // Проста анімація феєрверків
+        const canvas = document.querySelector('.fireworks');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const random = (min, max) => Math.random() * (max - min) + min;
+
+        const createParticle = () => ({
+            x: random(0, canvas.width),
+            y: random(0, canvas.height),
+            size: random(2, 5),
+            color: `hsl(${random(0, 360)}, 100%, 70%)`,
+            velocityX: random(-2, 2),
+            velocityY: random(-2, 2)
+        });
+
+        let particles = Array.from({ length: 100 }, createParticle);
+
+        function update() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.x += p.velocityX;
+                p.y += p.velocityY;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fillStyle = p.color;
+                ctx.fill();
+
+                if (p.x < 0 || p.x > canvas.width || p.y < 0 || p.y > canvas.height) {
+                    Object.assign(p, createParticle());
+                }
+            });
+            requestAnimationFrame(update);
+        }
+
+        update();
+    </script>
+</body>
+</html>
